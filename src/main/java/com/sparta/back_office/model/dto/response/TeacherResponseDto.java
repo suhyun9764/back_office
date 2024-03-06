@@ -23,6 +23,6 @@ public class TeacherResponseDto {
         this.career = teacher.getCareer();
         this.company = teacher.getCompany();
         this.phone_number = teacher.getPhone_number();
-        this.intro = teacher.getCompany();
+        this.intro = teacher.getIntro();
     }
 }

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class TeacherRequestDto {
+public class TeacherSaveRequestDto {
     private String name;
 
     private int career;

@@ -1,6 +1,7 @@
 package com.sparta.back_office.model.entity;
 
-import com.sparta.back_office.model.dto.request.TeacherRequestDto;
+import com.sparta.back_office.model.dto.request.TeacherSaveRequestDto;
+import com.sparta.back_office.model.dto.request.TeacherUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,11 +30,18 @@ public class Teacher {
     @Column
     private String intro;
 
-    public Teacher(TeacherRequestDto requestDto) {
+    public Teacher(TeacherSaveRequestDto requestDto) {
         this.name = requestDto.getName();
         this.career = requestDto.getCareer();
         this.company = requestDto.getCompany();
         this.phone_number = requestDto.getPhone_number();
         this.intro = requestDto.getIntro();
+    }
+
+    public void update(TeacherUpdateRequestDto teacherUpdateRequestDto) {
+        this.career = teacherUpdateRequestDto.getCareer();
+        this.company = teacherUpdateRequestDto.getCompany();
+        this.intro = teacherUpdateRequestDto.getIntro();
+        this.phone_number = teacherUpdateRequestDto.getPhone_number();
     }
 }
