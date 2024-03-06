@@ -54,4 +54,19 @@ public class LectureService {
         return new LectureResponseDto(lecture);
     }
 
+    public List<LectureResponseDto> findByTeacher(Long teacherId) {
+        teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new NotFoundByTeacherId("해당하는 강사가 존재하지 않습니다"));
+
+        return lectureRepository.findAllByTeacherIdOrderByRegisterDateDesc(teacherId).stream()
+                .map(LectureResponseDto::new).toList();
+    }
+
+    public Long delete(Long lectureId) {
+        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() ->
+                new NotFoundLectureException("해당하는 강의가 존재하지 않습니다"));
+
+        lectureRepository.delete(lecture);
+        return lectureId;
+    }
 }

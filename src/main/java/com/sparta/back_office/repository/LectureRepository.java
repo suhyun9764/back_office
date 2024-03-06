@@ -11,4 +11,5 @@ import java.util.List;
 public interface LectureRepository extends JpaRepository<Lecture,Long> {
 
     List<Lecture> findAllByCategoryOrderByRegisterDateDesc(Category category);
+    List<Lecture> findAllByTeacherIdOrderByRegisterDateDesc(Long teacherId);
 }
