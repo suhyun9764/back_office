@@ -1,13 +1,17 @@
 package com.sparta.back_office.service;
 
+import com.sparta.back_office.exception.manager.NotFoundByEmailException;
 import com.sparta.back_office.exception.manager.SignUpDuplicationException;
+import com.sparta.back_office.exception.manager.WrongPasswordException;
+import com.sparta.back_office.jwt.JwtUtil;
+import com.sparta.back_office.model.dto.request.SignInRequestDto;
 import com.sparta.back_office.model.dto.request.SignUpRequestDto;
-import com.sparta.back_office.model.dto.response.SignUpResponseDto;
 import com.sparta.back_office.model.entity.Manager;
 import com.sparta.back_office.model.enums.Team;
 import com.sparta.back_office.model.enums.Auth;
 import com.sparta.back_office.exception.manager.SignUpInputException;
 import com.sparta.back_office.repository.ManagerRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import java.util.Optional;
 public class ManagerService {
     private final ManagerRepository managerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
 
     // 회원가입
@@ -41,5 +46,23 @@ public class ManagerService {
         return message;
 
 
+    }
+
+    public String login(SignInRequestDto requestDto, HttpServletResponse response) {
+        String email = requestDto.getEmail();
+        String pw = requestDto.getPw();
+
+        // 사용자 확인
+        Manager manager = managerRepository.findById(email).orElseThrow(
+                () -> new NotFoundByEmailException("해당하는 계정이 존재하지 않습니다"));
+
+        // 비밀번호 확인
+        if(!passwordEncoder.matches(pw,manager.getPw()))
+            throw new WrongPasswordException("비밀번호가 틀렸습니다");
+
+        String token = jwtUtil.createToken(manager.getEmail(), manager.getAuth());
+        jwtUtil.addJwtToCookie(token, response);
+
+        return "<"+manager.getEmail()+"> 로그인 되었습니다";
     }
 }
