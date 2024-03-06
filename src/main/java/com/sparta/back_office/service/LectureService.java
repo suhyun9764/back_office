@@ -7,10 +7,13 @@ import com.sparta.back_office.model.dto.request.LectureUpdateRequestDto;
 import com.sparta.back_office.model.dto.response.LectureResponseDto;
 import com.sparta.back_office.model.entity.Lecture;
 import com.sparta.back_office.model.entity.Teacher;
+import com.sparta.back_office.model.enums.Category;
 import com.sparta.back_office.repository.LectureRepository;
 import com.sparta.back_office.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +33,12 @@ public class LectureService {
         return new LectureResponseDto(savedLecture);
     }
 
+    public List<LectureResponseDto> findByCategory(Category category) {
+        List<Lecture> lectures = lectureRepository.findAllByCategoryOrderByRegisterDateDesc(category);
+        List<LectureResponseDto> list = lectures.stream().map(LectureResponseDto::new).toList();
+        return list;
+    }
+
     public LectureResponseDto update(Long lectureId, LectureUpdateRequestDto lectureUpdateRequestDto) {
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() ->
                 new NotFoundLectureException("해당하는 강의가 존재하지 않습니다"));
@@ -37,4 +46,12 @@ public class LectureService {
         Lecture updateLecture = lectureRepository.save(lecture);
         return new LectureResponseDto(updateLecture);
     }
+
+    public LectureResponseDto findById(Long lectureId) {
+        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() ->
+                new NotFoundLectureException("해당하는 강의가 존재하지 않습니다"));
+
+        return new LectureResponseDto(lecture);
+    }
+
 }
