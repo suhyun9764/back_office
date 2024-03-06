@@ -32,4 +32,12 @@ public class TeacherController {
         return ResponseEntity.ok(teacherResponseDto);
     }
 
+    @DeleteMapping("/{teacherId}")
+    public ResponseEntity<String> deleteTeacherAndLectures(@PathVariable Long teacherId) {
+        Long deleteTeacherId = teacherService.deleteTeacherAndLectures(teacherId);
+
+        return ResponseEntity.ok("<"+deleteTeacherId+"> 강사 및 해당 강사의 강의 삭제");
+
+    }
+
 }

@@ -4,8 +4,10 @@ import com.sparta.back_office.exception.teacher.NotFoundByTeacherId;
 import com.sparta.back_office.model.dto.request.TeacherSaveRequestDto;
 import com.sparta.back_office.model.dto.request.TeacherUpdateRequestDto;
 import com.sparta.back_office.model.dto.response.TeacherResponseDto;
+import com.sparta.back_office.model.entity.Lecture;
 import com.sparta.back_office.model.entity.Teacher;
 import com.sparta.back_office.repository.TeacherRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +39,15 @@ public class TeacherService {
                 new NotFoundByTeacherId("해당하는 강사가 없습니다"));
 
         return new TeacherResponseDto(teacher);
+    }
+
+    public Long deleteTeacherAndLectures(Long teacherId) {
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new NotFoundByTeacherId("해당하는 강사가 없습니다"));
+
+        // 해당 강사의 강의를 모두 삭제
+        // 강사 삭제
+        teacherRepository.delete(teacher);
+        return teacherId;
     }
 }

@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "teachers")
 @NoArgsConstructor
@@ -26,6 +29,9 @@ public class Teacher {
 
     @Column
     private String phone_number;
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lecture> lectures = new ArrayList<>();
 
     @Column
     private String intro;
