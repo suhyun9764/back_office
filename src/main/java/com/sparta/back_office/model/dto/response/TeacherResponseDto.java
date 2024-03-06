@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TeacherResponseDto {
+    private Long id;
     private String name;
 
     private int career;
@@ -19,6 +20,7 @@ public class TeacherResponseDto {
     private String intro;
 
     public TeacherResponseDto(Teacher teacher) {
+        this.id = teacher.getId();
         this.name = teacher.getName();
         this.career = teacher.getCareer();
         this.company = teacher.getCompany();
