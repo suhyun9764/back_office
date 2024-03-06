@@ -31,4 +31,11 @@ public class TeacherService {
         return new TeacherResponseDto(updateTeacher);
 
     }
+
+    public TeacherResponseDto findById(Long teacherId) {
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() ->
+                new NotFoundByTeacherId("해당하는 강사가 없습니다"));
+
+        return new TeacherResponseDto(teacher);
+    }
 }

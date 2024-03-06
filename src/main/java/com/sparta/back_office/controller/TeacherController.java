@@ -21,8 +21,14 @@ public class TeacherController {
     }
 
     @PutMapping("/{teacherId}")
-    public ResponseEntity<TeacherResponseDto> save(@PathVariable Long teacherId, @RequestBody TeacherUpdateRequestDto teacherUpdateRequestDto){
+    public ResponseEntity<TeacherResponseDto> update(@PathVariable Long teacherId, @RequestBody TeacherUpdateRequestDto teacherUpdateRequestDto){
         TeacherResponseDto teacherResponseDto = teacherService.update(teacherId,teacherUpdateRequestDto);
+        return ResponseEntity.ok(teacherResponseDto);
+    }
+
+    @GetMapping("/{teacherId}")
+    public ResponseEntity<TeacherResponseDto> findById(@PathVariable Long teacherId){
+        TeacherResponseDto teacherResponseDto = teacherService.findById(teacherId);
         return ResponseEntity.ok(teacherResponseDto);
     }
 
