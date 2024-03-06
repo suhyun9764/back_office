@@ -1,9 +1,7 @@
 package com.sparta.back_office.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.sparta.back_office.model.dto.request.TeacherRequestDto;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Teacher {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -25,8 +24,16 @@ public class Teacher {
     private String company;
 
     @Column
-    private int phone_number;
+    private String phone_number;
 
     @Column
     private String intro;
+
+    public Teacher(TeacherRequestDto requestDto) {
+        this.name = requestDto.getName();
+        this.career = requestDto.getCareer();
+        this.company = requestDto.getCompany();
+        this.phone_number = requestDto.getPhone_number();
+        this.intro = requestDto.getIntro();
+    }
 }
