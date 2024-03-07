@@ -8,16 +8,22 @@ import com.sparta.back_office.service.LectureService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.sparta.back_office.model.enums.Auth.Authority.MANAGER;
+import static com.sparta.back_office.model.enums.Auth.Authority.STAFF;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Secured({MANAGER,STAFF})
 public class LectureController {
     private final LectureService lectureService;
     @PostMapping("/lectures")
+    @Secured(MANAGER)
     public ResponseEntity<LectureResponseDto> save(@RequestBody @Valid LectureSaveRequestDto lectureSaveRequestDto){
         LectureResponseDto lectureResponseDto = lectureService.save(lectureSaveRequestDto);
         return ResponseEntity.ok(lectureResponseDto);
@@ -32,6 +38,7 @@ public class LectureController {
 
 
     @PutMapping("/lectures/{lectureId}")
+    @Secured(MANAGER)
     public ResponseEntity<LectureResponseDto> update(@PathVariable Long lectureId,@RequestBody LectureUpdateRequestDto lectureUpdateRequestDto){
         LectureResponseDto lectureResponseDto = lectureService.update(lectureId,lectureUpdateRequestDto);
         return ResponseEntity.ok(lectureResponseDto);
@@ -44,6 +51,7 @@ public class LectureController {
     }
 
     @DeleteMapping("/lectures/{lectureId}")
+    @Secured(MANAGER)
     public ResponseEntity<String> delete(@PathVariable Long lectureId){
         Long deleteId = lectureService.delete(lectureId);
         return ResponseEntity.ok("<"+deleteId+">강의가 삭제되었습니다");

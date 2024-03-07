@@ -1,11 +1,15 @@
-package com.sparta.back_office;
+package com.sparta.back_office.config;
 
+import com.sparta.back_office.jwt.JwtAuthenticationFilter;
+import com.sparta.back_office.jwt.JwtAuthorizationFilter;
+import com.sparta.back_office.UserDetailsServiceImpl;
 import com.sparta.back_office.jwt.JwtUtil;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity // Spring Security 지원을 가능하게 함
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
@@ -67,6 +72,15 @@ public class WebSecurityConfig {
                         .loginPage("/api/manager/login-page").permitAll()
         );
 
+        http.exceptionHandling((exceptionHandling) ->
+                exceptionHandling
+                        // "접근 불가" 페이지 URL 설정
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setContentType("text/plain");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("권한이 없습니다");
+                        })
+        );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
