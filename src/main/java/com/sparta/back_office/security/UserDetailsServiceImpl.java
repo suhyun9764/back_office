@@ -2,7 +2,6 @@ package com.sparta.back_office.security;
 
 import com.sparta.back_office.model.entity.Manager;
 import com.sparta.back_office.repository.ManagerRepository;
-import com.sparta.back_office.security.UserDetailsImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

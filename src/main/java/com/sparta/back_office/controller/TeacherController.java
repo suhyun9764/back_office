@@ -1,7 +1,7 @@
 package com.sparta.back_office.controller;
 
-import com.sparta.back_office.model.dto.request.TeacherUpdateRequestDto;
 import com.sparta.back_office.model.dto.request.TeacherSaveRequestDto;
+import com.sparta.back_office.model.dto.request.TeacherUpdateRequestDto;
 import com.sparta.back_office.model.dto.response.TeacherResponseDto;
 import com.sparta.back_office.service.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -15,26 +15,27 @@ import static com.sparta.back_office.model.enums.Auth.Authority.STAFF;
 @RestController
 @RequestMapping("/api/teachers")
 @RequiredArgsConstructor
-@Secured({MANAGER,STAFF})
+@Secured({MANAGER, STAFF})
 public class TeacherController {
 
     private final TeacherService teacherService;
+
     @PostMapping("")
 
-    public ResponseEntity<TeacherResponseDto> save(@RequestBody TeacherSaveRequestDto teacherSaveRequestDto){
+    public ResponseEntity<TeacherResponseDto> save(@RequestBody TeacherSaveRequestDto teacherSaveRequestDto) {
         TeacherResponseDto teacherResponseDto = teacherService.save(teacherSaveRequestDto);
         return ResponseEntity.ok(teacherResponseDto);
     }
 
     @PutMapping("/{teacherId}")
     @Secured(MANAGER)
-    public ResponseEntity<TeacherResponseDto> update(@PathVariable Long teacherId, @RequestBody TeacherUpdateRequestDto teacherUpdateRequestDto){
-        TeacherResponseDto teacherResponseDto = teacherService.update(teacherId,teacherUpdateRequestDto);
+    public ResponseEntity<TeacherResponseDto> update(@PathVariable Long teacherId, @RequestBody TeacherUpdateRequestDto teacherUpdateRequestDto) {
+        TeacherResponseDto teacherResponseDto = teacherService.update(teacherId, teacherUpdateRequestDto);
         return ResponseEntity.ok(teacherResponseDto);
     }
 
     @GetMapping("/{teacherId}")
-    public ResponseEntity<TeacherResponseDto> findById(@PathVariable Long teacherId){
+    public ResponseEntity<TeacherResponseDto> findById(@PathVariable Long teacherId) {
         TeacherResponseDto teacherResponseDto = teacherService.findById(teacherId);
         return ResponseEntity.ok(teacherResponseDto);
     }
@@ -43,7 +44,7 @@ public class TeacherController {
     public ResponseEntity<String> deleteTeacherAndLectures(@PathVariable Long teacherId) {
         Long deleteTeacherId = teacherService.deleteTeacherAndLectures(teacherId);
 
-        return ResponseEntity.ok("<"+deleteTeacherId+"> 강사 및 해당 강사의 강의 삭제");
+        return ResponseEntity.ok("<" + deleteTeacherId + "> 강사 및 해당 강사의 강의 삭제");
 
     }
 

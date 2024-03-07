@@ -1,15 +1,16 @@
 package com.sparta.back_office.controller;
 
 import com.sparta.back_office.exception.manager.SignUpInputException;
-import com.sparta.back_office.model.dto.request.SignInRequestDto;
 import com.sparta.back_office.model.dto.request.SignUpRequestDto;
 import com.sparta.back_office.service.ManagerService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

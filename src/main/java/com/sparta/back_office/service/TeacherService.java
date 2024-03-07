@@ -4,13 +4,13 @@ import com.sparta.back_office.exception.teacher.NotFoundByTeacherId;
 import com.sparta.back_office.model.dto.request.TeacherSaveRequestDto;
 import com.sparta.back_office.model.dto.request.TeacherUpdateRequestDto;
 import com.sparta.back_office.model.dto.response.TeacherResponseDto;
-import com.sparta.back_office.model.entity.Lecture;
 import com.sparta.back_office.model.entity.Teacher;
 import com.sparta.back_office.repository.TeacherRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.sparta.back_office.constants.TeacherConstants.TEACHER_NOT_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +23,14 @@ public class TeacherService {
         return new TeacherResponseDto(teacher);
     }
 
+    public TeacherResponseDto findById(Long teacherId) {
+        Teacher teacher = getTeacher(teacherId);
+        return new TeacherResponseDto(teacher);
+    }
+
     @Transactional
     public TeacherResponseDto update(Long teacherId, TeacherUpdateRequestDto teacherUpdateRequestDto) {
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() ->
-                new NotFoundByTeacherId("해당하는 강사가 없습니다"));
+        Teacher teacher = getTeacher(teacherId);
         teacher.update(teacherUpdateRequestDto);
         Teacher updateTeacher = teacherRepository.save(teacher);
 
@@ -34,20 +38,16 @@ public class TeacherService {
 
     }
 
-    public TeacherResponseDto findById(Long teacherId) {
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() ->
-                new NotFoundByTeacherId("해당하는 강사가 없습니다"));
-
-        return new TeacherResponseDto(teacher);
-    }
-
+    @Transactional
     public Long deleteTeacherAndLectures(Long teacherId) {
-        Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new NotFoundByTeacherId("해당하는 강사가 없습니다"));
-
-        // 해당 강사의 강의를 모두 삭제
-        // 강사 삭제
+        Teacher teacher = getTeacher(teacherId);
         teacherRepository.delete(teacher);
         return teacherId;
+    }
+
+    private Teacher getTeacher(Long teacherId) {
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() ->
+                new NotFoundByTeacherId(TEACHER_NOT_EXIST));
+        return teacher;
     }
 }

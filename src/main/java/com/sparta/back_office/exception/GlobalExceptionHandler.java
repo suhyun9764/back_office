@@ -4,7 +4,6 @@ import com.sparta.back_office.exception.lecture.NotFoundLectureException;
 import com.sparta.back_office.exception.manager.NotFoundByEmailException;
 import com.sparta.back_office.exception.manager.SignUpDuplicationException;
 import com.sparta.back_office.exception.manager.SignUpInputException;
-import com.sparta.back_office.exception.manager.WrongPasswordException;
 import com.sparta.back_office.exception.teacher.NotFoundByTeacherId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +24,6 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(NotFoundByEmailException.class)
     public ResponseEntity<String> handleNotFoundByEmailException(NotFoundByEmailException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(WrongPasswordException.class)
-    public ResponseEntity<String> handleWrongPasswordException(WrongPasswordException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

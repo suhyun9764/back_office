@@ -8,21 +8,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name ="managers")
+@Table(name = "managers")
 @Getter
 @NoArgsConstructor
 public class Manager {
     @Id
     private String email;
 
-    @Column(name="pw", nullable = false)
+    @Column(name = "pw", nullable = false)
     private String pw;
 
-    @Column(name="team", nullable = false)
+    @Column(name = "team", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Team team;
 
-    @Column(name="auth", nullable = false)
+    @Column(name = "auth", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Auth auth;
 

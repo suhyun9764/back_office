@@ -1,7 +1,6 @@
 package com.sparta.back_office.model.dto.response;
 
 import com.sparta.back_office.model.entity.Teacher;
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

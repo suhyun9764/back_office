@@ -19,46 +19,46 @@ import static com.sparta.back_office.model.enums.Auth.Authority.STAFF;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Secured({MANAGER,STAFF})
+@Secured({MANAGER, STAFF})
 public class LectureController {
     private final LectureService lectureService;
+
     @PostMapping("/lectures")
     @Secured(MANAGER)
-    public ResponseEntity<LectureResponseDto> save(@RequestBody @Valid LectureSaveRequestDto lectureSaveRequestDto){
+    public ResponseEntity<LectureResponseDto> save(@RequestBody @Valid LectureSaveRequestDto lectureSaveRequestDto) {
         LectureResponseDto lectureResponseDto = lectureService.save(lectureSaveRequestDto);
         return ResponseEntity.ok(lectureResponseDto);
     }
 
     @GetMapping("/lectures")
-    public ResponseEntity<List<LectureResponseDto>> findByCategory(@RequestParam @Valid Category category){
+    public ResponseEntity<List<LectureResponseDto>> findByCategory(@RequestParam @Valid Category category) {
         List<LectureResponseDto> lectures = lectureService.findByCategory(category);
         return ResponseEntity.ok(lectures);
     }
 
 
-
     @PutMapping("/lectures/{lectureId}")
     @Secured(MANAGER)
-    public ResponseEntity<LectureResponseDto> update(@PathVariable Long lectureId,@RequestBody LectureUpdateRequestDto lectureUpdateRequestDto){
-        LectureResponseDto lectureResponseDto = lectureService.update(lectureId,lectureUpdateRequestDto);
+    public ResponseEntity<LectureResponseDto> update(@PathVariable Long lectureId, @RequestBody LectureUpdateRequestDto lectureUpdateRequestDto) {
+        LectureResponseDto lectureResponseDto = lectureService.update(lectureId, lectureUpdateRequestDto);
         return ResponseEntity.ok(lectureResponseDto);
     }
 
     @GetMapping("/lectures/{lectureId}")
-    public ResponseEntity<LectureResponseDto> findById(@PathVariable Long lectureId){
+    public ResponseEntity<LectureResponseDto> findById(@PathVariable Long lectureId) {
         LectureResponseDto lectureResponseDto = lectureService.findById(lectureId);
         return ResponseEntity.ok(lectureResponseDto);
     }
 
     @DeleteMapping("/lectures/{lectureId}")
     @Secured(MANAGER)
-    public ResponseEntity<String> delete(@PathVariable Long lectureId){
+    public ResponseEntity<String> delete(@PathVariable Long lectureId) {
         Long deleteId = lectureService.delete(lectureId);
-        return ResponseEntity.ok("<"+deleteId+">강의가 삭제되었습니다");
+        return ResponseEntity.ok("<" + deleteId + ">강의가 삭제되었습니다");
     }
 
     @GetMapping("/teachers/{teacherId}/lectures")
-    public ResponseEntity<List<LectureResponseDto>> findByTeacher(@PathVariable Long teacherId){
+    public ResponseEntity<List<LectureResponseDto>> findByTeacher(@PathVariable Long teacherId) {
         List<LectureResponseDto> lectures = lectureService.findByTeacher(teacherId);
         return ResponseEntity.ok(lectures);
     }

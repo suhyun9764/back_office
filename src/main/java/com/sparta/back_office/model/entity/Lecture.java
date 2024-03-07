@@ -1,20 +1,16 @@
 package com.sparta.back_office.model.entity;
 
-import com.sparta.back_office.model.dto.request.LectureSaveRequestDto;
 import com.sparta.back_office.model.dto.request.LectureUpdateRequestDto;
 import com.sparta.back_office.model.enums.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "lectures")
 @NoArgsConstructor
 @Getter
-public class Lecture extends DateValue{
+public class Lecture extends DateValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +19,7 @@ public class Lecture extends DateValue{
     private String lectureName;
 
     @ManyToOne
-    @JoinColumn(name="teacher_id")
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
     @Column(nullable = false)
@@ -36,7 +32,7 @@ public class Lecture extends DateValue{
     @Column(nullable = false)
     private String intro;
 
-    public Lecture(String lectureName,Teacher teacher, Category category, int price, String intro) {
+    public Lecture(String lectureName, Teacher teacher, Category category, int price, String intro) {
         this.lectureName = lectureName;
         this.teacher = teacher;
         this.category = category;
@@ -44,7 +40,7 @@ public class Lecture extends DateValue{
         this.intro = intro;
     }
 
-    public void update(LectureUpdateRequestDto lectureUpdateRequestDto){
+    public void update(LectureUpdateRequestDto lectureUpdateRequestDto) {
         this.lectureName = lectureUpdateRequestDto.getLectureName();
         this.price = lectureUpdateRequestDto.getPrice();
         this.intro = lectureUpdateRequestDto.getIntro();

@@ -6,6 +6,7 @@ public enum Category {
     NODE("Node");
 
     private final String categoryName;
+
     Category(String categoryName) {
         this.categoryName = categoryName;
     }

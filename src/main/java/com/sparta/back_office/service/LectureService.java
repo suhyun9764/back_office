@@ -12,8 +12,12 @@ import com.sparta.back_office.repository.LectureRepository;
 import com.sparta.back_office.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.sparta.back_office.constants.LectureConstants.LECTURE_NOT_EXIST;
+import static com.sparta.back_office.constants.TeacherConstants.TEACHER_NOT_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +26,9 @@ public class LectureService {
     private final TeacherRepository teacherRepository;
     private final LectureRepository lectureRepository;
 
+    @Transactional
     public LectureResponseDto save(LectureSaveRequestDto requestDto) {
-        // id 확인
-        Teacher teacher = teacherRepository.findById(requestDto.getTeacherId())
-                .orElseThrow(() -> new NotFoundByTeacherId("해당하는 강사가 존재하지 않습니다"));
-
+        Teacher teacher = getTeacher(requestDto);
         Lecture lecture = new Lecture(requestDto.getLectureName(), teacher, requestDto.getCategory(), requestDto.getPrice(), requestDto.getIntro());
         Lecture savedLecture = lectureRepository.save(lecture);
 
@@ -35,38 +37,46 @@ public class LectureService {
 
     public List<LectureResponseDto> findByCategory(Category category) {
         List<Lecture> lectures = lectureRepository.findAllByCategoryOrderByRegisterDateDesc(category);
-        List<LectureResponseDto> list = lectures.stream().map(LectureResponseDto::new).toList();
-        return list;
+        return lectures.stream().map(LectureResponseDto::new).toList();
     }
-
+    @Transactional
     public LectureResponseDto update(Long lectureId, LectureUpdateRequestDto lectureUpdateRequestDto) {
-        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() ->
-                new NotFoundLectureException("해당하는 강의가 존재하지 않습니다"));
+        Lecture lecture = getLecture(lectureId);
         lecture.update(lectureUpdateRequestDto);
         Lecture updateLecture = lectureRepository.save(lecture);
         return new LectureResponseDto(updateLecture);
     }
+    @Transactional
+    public Long delete(Long lectureId) {
+        Lecture lecture = getLecture(lectureId);
+        lectureRepository.delete(lecture);
+        return lectureId;
+    }
 
     public LectureResponseDto findById(Long lectureId) {
-        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() ->
-                new NotFoundLectureException("해당하는 강의가 존재하지 않습니다"));
-
+        Lecture lecture = getLecture(lectureId);
         return new LectureResponseDto(lecture);
     }
 
     public List<LectureResponseDto> findByTeacher(Long teacherId) {
-        teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new NotFoundByTeacherId("해당하는 강사가 존재하지 않습니다"));
-
+        getLecture(teacherId);
         return lectureRepository.findAllByTeacherIdOrderByRegisterDateDesc(teacherId).stream()
                 .map(LectureResponseDto::new).toList();
     }
 
-    public Long delete(Long lectureId) {
-        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() ->
-                new NotFoundLectureException("해당하는 강의가 존재하지 않습니다"));
-
-        lectureRepository.delete(lecture);
-        return lectureId;
+    private Teacher getTeacher(LectureSaveRequestDto requestDto) {
+        Teacher teacher = teacherRepository.findById(requestDto.getTeacherId())
+                .orElseThrow(() -> new NotFoundByTeacherId(TEACHER_NOT_EXIST));
+        return teacher;
     }
+
+    private Lecture getLecture(Long lectureId) {
+        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() ->
+                new NotFoundLectureException(LECTURE_NOT_EXIST));
+        return lecture;
+    }
+
+
+
+
 }
