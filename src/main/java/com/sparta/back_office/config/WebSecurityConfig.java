@@ -2,7 +2,7 @@ package com.sparta.back_office.config;
 
 import com.sparta.back_office.jwt.JwtAuthenticationFilter;
 import com.sparta.back_office.jwt.JwtAuthorizationFilter;
-import com.sparta.back_office.UserDetailsServiceImpl;
+import com.sparta.back_office.security.UserDetailsServiceImpl;
 import com.sparta.back_office.jwt.JwtUtil;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

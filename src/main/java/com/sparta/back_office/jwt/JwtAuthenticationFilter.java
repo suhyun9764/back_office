@@ -1,7 +1,7 @@
-package com.sparta.back_office;
+package com.sparta.back_office.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.back_office.jwt.JwtUtil;
+import com.sparta.back_office.security.UserDetailsImpl;
 import com.sparta.back_office.model.dto.request.SignInRequestDto;
 import com.sparta.back_office.model.enums.Auth;
 import jakarta.servlet.FilterChain;
@@ -9,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

@@ -1,4 +1,4 @@
-package com.sparta.back_office;
+package com.sparta.back_office.security;
 
 import com.sparta.back_office.model.entity.Manager;
 import com.sparta.back_office.model.enums.Auth;

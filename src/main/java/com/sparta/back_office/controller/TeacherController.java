@@ -6,21 +6,28 @@ import com.sparta.back_office.model.dto.response.TeacherResponseDto;
 import com.sparta.back_office.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import static com.sparta.back_office.model.enums.Auth.Authority.MANAGER;
+import static com.sparta.back_office.model.enums.Auth.Authority.STAFF;
 
 @RestController
 @RequestMapping("/api/teachers")
 @RequiredArgsConstructor
+@Secured({MANAGER,STAFF})
 public class TeacherController {
 
     private final TeacherService teacherService;
     @PostMapping("")
+
     public ResponseEntity<TeacherResponseDto> save(@RequestBody TeacherSaveRequestDto teacherSaveRequestDto){
         TeacherResponseDto teacherResponseDto = teacherService.save(teacherSaveRequestDto);
         return ResponseEntity.ok(teacherResponseDto);
     }
 
     @PutMapping("/{teacherId}")
+    @Secured(MANAGER)
     public ResponseEntity<TeacherResponseDto> update(@PathVariable Long teacherId, @RequestBody TeacherUpdateRequestDto teacherUpdateRequestDto){
         TeacherResponseDto teacherResponseDto = teacherService.update(teacherId,teacherUpdateRequestDto);
         return ResponseEntity.ok(teacherResponseDto);
