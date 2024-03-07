@@ -9,15 +9,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/manager")
 public class ManagerController {
     private final ManagerService managerService;
 
@@ -34,10 +31,4 @@ public class ManagerController {
         }
         return ResponseEntity.ok(managerService.signUp(requestDto));
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody SignInRequestDto requestDto, HttpServletResponse response){
-        return ResponseEntity.ok(managerService.login(requestDto,response));
-    }
-
 }
